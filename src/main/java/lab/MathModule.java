@@ -51,24 +51,24 @@ public class MathModule {
 
         // right
         n = 1; //начальное число шагов
-        s1 = left_rectangle_integral(f, a, b, n); //первое приближение для интеграла
+        s1 = right_rectangle_integral(f, a, b, n); //первое приближение для интеграла
         do {
             s = s1;     //второе приближение
             n = 2 * n;  //увеличение числа шагов в два раза,
             //т.е. уменьшение значения шага в два раза
-            s1 = left_rectangle_integral(f, a, b, n);
+            s1 = right_rectangle_integral(f, a, b, n);
         }
         while (Math.abs(s1 - s) > eps);  //сравнение приближений с заданной точностью
         resultSet.setRight(s1);
 
         // mid
         n = 1; //начальное число шагов
-        s1 = left_rectangle_integral(f, a, b, n); //первое приближение для интеграла
+        s1 = mid_rectangle_integral(f, a, b, n); //первое приближение для интеграла
         do {
             s = s1;     //второе приближение
             n = 2 * n;  //увеличение числа шагов в два раза,
             //т.е. уменьшение значения шага в два раза
-            s1 = left_rectangle_integral(f, a, b, n);
+            s1 = mid_rectangle_integral(f, a, b, n);
         }
         while (Math.abs(s1 - s) > eps);  //сравнение приближений с заданной точностью
         resultSet.setMid(s1);

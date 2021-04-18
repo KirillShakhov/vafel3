@@ -35,7 +35,7 @@ public class MathModule {
 
 
 
-    public ResultSet solve(IFunc f, double a, double b, double eps){
+    public static ResultSet solve(IFunc f, double a, double b, double eps){
         ResultSet resultSet = new ResultSet();
         // left
         int n = 1; //начальное число шагов

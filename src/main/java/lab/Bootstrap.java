@@ -1,19 +1,40 @@
 package lab;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Bootstrap {
     static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
         System.out.println("Нахождение интегралов методом прямоугольников(левых, правых, средних)");
-        ArrayList<IFunc> funcs = new ArrayList<>();
-        funcs.add(x -> Math.sin(x)/x);
+        Map<String, IFunc> funcs = new HashMap<>();
+        // 1
+        funcs.put("sin(x)/x", x -> Math.sin(x)/x);
+        // 2
+        funcs.put("2x", x -> 2*x);
+        //
 
-//        for(IFunc func : funcs){
-//            MathModule.solve(func, 1, 2, 0.001);
-//        }
-        IFunc f = funcs.get(0);
+        /*
+        Вывод и обработка ввода. Не трогать.
+        */
+        int i = 1;
+        ArrayList<String> keys = new ArrayList<>();
+        for (Map.Entry<String, IFunc> entry : funcs.entrySet()) {
+            System.out.println((i++) + ". " + entry.getKey());
+            keys.add(entry.getKey());
+        }
+        String str = scanner.nextLine();
+        try {
+            IFunc func1 = funcs.get(keys.get(Integer.parseInt(str) - 1));
+            solve(func1);
+        } catch (Exception e) {
+            System.out.println("Нет такого уравнения");
+        }
+    }
+
+    static void solve(IFunc f){
         System.out.println("Введите a:");
         double a = Double.parseDouble(scanner.nextLine());
         System.out.println("Введите b:");

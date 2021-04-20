@@ -12,8 +12,10 @@ public class Bootstrap {
         Map<String, IFunc> funcs = new HashMap<>();
         // 1
         funcs.put("sin(x)/x", x -> Math.sin(x)/x);
+        funcs.put("sin(x)/x-6", x -> Math.sin(x)/(x-6));
         // 2
         funcs.put("2x", x -> 2*x);
+
         //
 
         /*
@@ -41,10 +43,22 @@ public class Bootstrap {
         double b = Double.parseDouble(scanner.nextLine());
         System.out.println("Введите погрешность:");
         double eps = Double.parseDouble(scanner.nextLine());
-        ResultSet result = MathModule.solve(f, a, b, eps);
-        System.out.println("Результаты:");
-        System.out.println("Левые прямоугольники: "+String.format("%.8f", result.getLeft())+" eps: "+String.format("%.8f", result.getEpsLeft()));
-        System.out.println("Правые прямоугольники: "+String.format("%.8f", result.getRight())+" eps: "+String.format("%.8f", result.getEpsRight()));
-        System.out.println("Средние прямоугольники: "+String.format("%.8f", result.getMid())+" eps: "+String.format("%.8f", result.getEpsMid()));
+        ArrayList<Separation> array = MathModule.findSeparation(f, a, b);
+        double sum_left = 0.0d;
+        double sum_right = 0.0d;
+        double sum_mid = 0.0d;
+        for(Separation s : array){
+            ResultSet result = MathModule.solve(f, a, b, eps);
+            sum_left += result.getLeft();
+            sum_right += result.getRight();
+            sum_mid += result.getMid();
+            System.out.println("Результаты для отрезка от "+a+" до "+b+":");
+            System.out.println("Левые прямоугольники: "+String.format("%.8f", result.getLeft())+" eps: "+String.format("%.8f", result.getEpsLeft()));
+            System.out.println("Правые прямоугольники: "+String.format("%.8f", result.getRight())+" eps: "+String.format("%.8f", result.getEpsRight()));
+            System.out.println("Средние прямоугольники: "+String.format("%.8f", result.getMid())+" eps: "+String.format("%.8f", result.getEpsMid()));
+        }
+        System.out.println("Сумма для метода левых прямоугольников: "+MathModule.round(sum_left,8));
+        System.out.println("Сумма для метода правых прямоугольников: "+MathModule.round(sum_right,8));
+        System.out.println("Сумма для метода средних прямоугольников: "+MathModule.round(sum_mid,8));
     }
 }

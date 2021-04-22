@@ -36,45 +36,42 @@ public class MathModule {
         return sum*step;//множим на величину шага и возвращаем в вызывающую функцию
     }
 
-    static ArrayList<Separation> findSeparation(IFunc func, double a, double b){
-        // TODO доделать для промежутка [0, 5], где точка 0 разрыв и для [0, 5], где точка 5 разрыв.
+    static ArrayList<Separation> findSeparations(IFunc func, double a, double b){
         ArrayList<Separation> array = new ArrayList<>();
         double eps = 0.00000001;
         int scale = 8; // Количество знаков после запятой.
+        // Проверка первого элемента
+        Double first = func.solve(round(a, scale));
+        double left_now = first.isNaN() || first.isInfinite() ? a + eps : a;
+        // Проверка элементов (a, b)
         if(a<=b){
-            double left_now = a;
-            for(double i = a; i <= b; i+=0.0001){
+            for(double i = a+0.0001; i < b; i+=0.0001){
                 if (func.solve(round(i, scale)).isNaN() || func.solve(round(i, scale)).isInfinite()) {
                     array.add(new Separation(left_now, i-eps));
                     left_now = i+eps;
                 }
             }
-            array.add(new Separation(left_now, b));
         }
         else{
-            double left_now = a;
-            for(double i = a; i >= b; i-=0.0001){
+            for(double i = a; i > b; i-=0.0001){
                 if (func.solve(round(i, scale)).isNaN() || func.solve(round(i, scale)).isInfinite()) {
                     array.add(new Separation(left_now, i+eps));
                     left_now = i-eps;
                 }
-                else if(round(i, scale)==b){
-                    array.add(new Separation(left_now, i));
-                }
             }
         }
+        // Проверка последнего элемента
+        Double end = func.solve(round(b, scale));
+        end = end.isNaN() || end.isInfinite() ? b - eps : b;
+        array.add(new Separation(left_now, end));
         return array;
     }
-    public static double round(double x, int scale){
-        return round(x,scale,4);
-    }
-
-    public static double round(double x, int scale, int roundingMethod) {
+    public static Double round(double x, int scale) {
         try {
-            double rounded = (new BigDecimal(Double.toString(x))).setScale(scale, roundingMethod).doubleValue();
+            double rounded = (new BigDecimal(Double.toString(x))).setScale(scale, 4).doubleValue();
             return rounded == 0.0D ? 0.0D * x : rounded;
         } catch (NumberFormatException var6) {
-            return Double.isInfinite(x) ? x : 0.0D / 0.0;
+            return Double.isInfinite(x) ? x : Double.NaN;
         }
     }
 

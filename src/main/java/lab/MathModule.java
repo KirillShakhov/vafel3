@@ -114,87 +114,27 @@ public class MathModule {
     }
 
 
-    public static ResultSet solve(IFunc f, double a, double b, double eps){
+    public static ResultSet solve(IFunc f, double a, double b, int eps){
         ResultSet resultSet = new ResultSet();
         // left
-        int iter = 0;
-        int n = 1; //начальное число шагов
-        double s, s1 = left_rectangle_integral(f, a, b, n); //первое приближение для интеграла
-        do {
-            s = s1;     //второе приближение
-            n = 2 * n;  //увеличение числа шагов в два раза,
-            //т.е. уменьшение значения шага в два раза
-            s1 = left_rectangle_integral(f, a, b, n);
-            iter++;
-        }
-        while (Math.abs(s1 - s) > eps);  //сравнение приближений с заданной точностью
+        double s1 = left_rectangle_integral(f, a, b, eps);
         resultSet.setLeft(s1);
-
         // left eps
-        iter*=2;
-        n = 1; //начальное число шагов
-        s1 = left_rectangle_integral(f, a, b, n); //первое приближение для интеграла
-        do {
-            s = s1;     //второе приближение
-            n = 2 * n;  //увеличение числа шагов в два раза,
-            //т.е. уменьшение значения шага в два раза
-            s1 = left_rectangle_integral(f, a, b, n);
-        }
-        while (iter-->0);  //сравнение приближений с заданной точностью
+        s1 = left_rectangle_integral(f, a, b, eps*2); //первое приближение для интеграла
         resultSet.setEpsLeft(Math.abs(resultSet.getLeft()-s1));
-
         // right
-        iter = 0;
-        n = 1; //начальное число шагов
-        s1 = right_rectangle_integral(f, a, b, n); //первое приближение для интеграла
-        do {
-            s = s1;     //второе приближение
-            n = 2 * n;  //увеличение числа шагов в два раза,
-            //т.е. уменьшение значения шага в два раза
-            s1 = right_rectangle_integral(f, a, b, n);
-            iter++;
-        }
-        while (Math.abs(s1 - s) > eps);  //сравнение приближений с заданной точностью
+        s1 = right_rectangle_integral(f, a, b, eps); //первое приближение для интеграла
         resultSet.setRight(s1);
-
         // right eps
-        iter*=2;
-        n = 1; //начальное число шагов
-        s1 = right_rectangle_integral(f, a, b, n); //первое приближение для интеграла
-        do {
-            s = s1;     //второе приближение
-            n = 2 * n;  //увеличение числа шагов в два раза,
-            //т.е. уменьшение значения шага в два раза
-            s1 = right_rectangle_integral(f, a, b, n);
-        }
-        while (iter-->0);  //сравнение приближений с заданной точностью
+        s1 = right_rectangle_integral(f, a, b, eps*2);
         resultSet.setEpsRight(Math.abs(resultSet.getRight()-s1));
 
         // mid
-        iter = 0;
-        n = 1; //начальное число шагов
-        s1 = mid_rectangle_integral(f, a, b, n); //первое приближение для интеграла
-        do {
-            s = s1;     //второе приближение
-            n = 2 * n;  //увеличение числа шагов в два раза,
-            //т.е. уменьшение значения шага в два раза
-            s1 = mid_rectangle_integral(f, a, b, n);
-            iter++;
-        }
-        while (Math.abs(s1 - s) > eps);  //сравнение приближений с заданной точностью
+        s1 = mid_rectangle_integral(f, a, b, eps); //первое приближение для интеграла
         resultSet.setMid(s1);
 
         // mid eps
-        iter *= 2;
-        n = 1; //начальное число шагов
-        s1 = mid_rectangle_integral(f, a, b, n); //первое приближение для интеграла
-        do {
-            s = s1;     //второе приближение
-            n = 2 * n;  //увеличение числа шагов в два раза,
-            //т.е. уменьшение значения шага в два раза
-            s1 = mid_rectangle_integral(f, a, b, n);
-        }
-        while (iter-->0);  //сравнение приближений с заданной точностью
+        s1 = mid_rectangle_integral(f, a, b, eps*2); //первое приближение для интеграла
         resultSet.setEpsMid(Math.abs(resultSet.getMid()-s1));
         return resultSet;
     }

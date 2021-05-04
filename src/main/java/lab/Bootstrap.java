@@ -41,8 +41,8 @@ public class Bootstrap {
         double a = Double.parseDouble(scanner.nextLine());
         System.out.println("Введите b:");
         double b = Double.parseDouble(scanner.nextLine());
-        System.out.println("Введите погрешность:");
-        double eps = Double.parseDouble(scanner.nextLine());
+        System.out.println("Введите колво шагов:");
+        int eps = Integer.parseInt(scanner.nextLine());
         ArrayList<Separation> array = MathModule.findSeparations(f, a, b);
         double sum_left = 0.0d;
         double sum_right = 0.0d;
